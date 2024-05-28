@@ -9,14 +9,14 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-public class Sessions {
+public class Session {
     @Id
     @Column(name = "ID")
     private String id;
 
     @OneToOne
     @JoinColumn(name = "UserID")
-    private Users user;
+    private User user;
 
     @Column(name = "ExpiresAt")
     private Date expiresAt;

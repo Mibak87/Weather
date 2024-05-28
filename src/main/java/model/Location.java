@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class Locations {
+public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -20,7 +20,7 @@ public class Locations {
 
     @OneToMany
     @JoinColumn(name = "UserID")
-    private List<Users> users;
+    private List<User> users;
 
     @Column(name = "Latitude")
     private long latitude;
