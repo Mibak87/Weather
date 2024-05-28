@@ -11,8 +11,8 @@
         <property name="connection.password">gabawer</property>
         <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
         <property name="hbm2ddl.auto">update</property>
-        <mapping class="model.Users"/>
-        <mapping class="model.Locations"/>
-        <mapping class="model.Sessions"/>
+        <mapping class="model.User"/>
+        <mapping class="model.Location"/>
+        <mapping class="model.Session"/>
     </session-factory>
 </hibernate-configuration>
