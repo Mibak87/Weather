@@ -10,7 +10,7 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "Sessions")
-public class Session {
+public class UserSession {
     @Id
     @Column(name = "ID")
     private String id;
@@ -22,10 +22,10 @@ public class Session {
     @Column(name = "ExpiresAt")
     private Date expiresAt;
 
-    public Session() {
+    public UserSession() {
     }
 
-    public Session(String id, User user, Date expiresAt) {
+    public UserSession(String id, User user, Date expiresAt) {
         this.id = id;
         this.user = user;
         this.expiresAt = expiresAt;
