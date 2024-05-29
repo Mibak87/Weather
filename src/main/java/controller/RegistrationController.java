@@ -4,6 +4,7 @@ import dto.RegistrationDto;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import service.RegistrationService;
 
 import java.io.IOException;
 
@@ -11,7 +12,8 @@ import java.io.IOException;
 public class RegistrationController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        RequestDispatcher dispatcher = request.getRequestDispatcher("registration.html");
+        dispatcher.forward(request,response);
     }
 
     @Override
@@ -28,6 +30,8 @@ public class RegistrationController extends HttpServlet {
                 HttpSession session = request.getSession();
                 String sessionId = session.getId();
                 RegistrationDto registrationDto = new RegistrationDto(sessionId,login,password);
+                new RegistrationService().registration(registrationDto);
+                response.sendRedirect("weather");
             }
         }
     }
