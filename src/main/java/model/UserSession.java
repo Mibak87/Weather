@@ -3,11 +3,13 @@ package model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Date;
 
 @Getter
 @Setter
+@ToString
 @Entity
 @Table(name = "Sessions")
 public class UserSession {
@@ -15,7 +17,7 @@ public class UserSession {
     @Column(name = "ID")
     private String id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "UserID")
     private User user;
 

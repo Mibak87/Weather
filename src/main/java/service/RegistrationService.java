@@ -7,6 +7,7 @@ import model.UserSession;
 import utils.Util;
 
 import java.util.Date;
+import java.util.List;
 
 public class RegistrationService {
     private final int HOURS_BEFORE_SESSION_TIME_EXPIRES = 5;
@@ -15,5 +16,7 @@ public class RegistrationService {
         Date expiresAt = Util.getExpiryDate(HOURS_BEFORE_SESSION_TIME_EXPIRES);
         UserSession userSession = new UserSession(registrationDto.getId(), user, expiresAt);
         new SessionsDao().save(userSession);
+        List<UserSession> userSessions = new SessionsDao().findAll();
+        System.out.println(userSessions.get(0).toString());
     }
 }

@@ -4,14 +4,19 @@ import dto.RegistrationDto;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import service.RegistrationService;
 
 import java.io.IOException;
 
 @WebServlet(name = "RegistrationController", value = "/registration")
 public class RegistrationController extends HttpServlet {
+    private static final Logger logger = LogManager.getLogger(RegistrationController.class);
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        logger.info("RegistrationController, Get");
         RequestDispatcher dispatcher = request.getRequestDispatcher("registration.html");
         dispatcher.forward(request,response);
     }
@@ -21,11 +26,14 @@ public class RegistrationController extends HttpServlet {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         String passwordRepeat = request.getParameter("passwordRepeat");
+        logger.info("Login: " + login);
+        logger.info("Password1: " + password);
+        logger.info("Password2: " + passwordRepeat);
         if (login.isEmpty() || password.isEmpty()) {
-            System.out.println("Поля не должны быть пустыми!");
+            logger.info("The fields should not be empty!");
         } else {
             if (!password.equals(passwordRepeat)) {
-                System.out.println("Пароли не совпадают!");
+                logger.info("Passwords don't match!");
             } else {
                 HttpSession session = request.getSession();
                 String sessionId = session.getId();
