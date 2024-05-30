@@ -10,7 +10,7 @@
         <property name="connection.username">postgres</property>
         <property name="connection.password">gabawer</property>
         <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-        <property name="hbm2ddl.auto">update</property>
+        <property name="hbm2ddl.auto">create</property>
         <mapping class="model.User"/>
         <mapping class="model.Location"/>
         <mapping class="model.UserSession"/>
