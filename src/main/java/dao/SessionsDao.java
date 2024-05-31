@@ -7,6 +7,7 @@ import org.hibernate.Transaction;
 import utils.HibernateUtil;
 
 import java.util.List;
+import java.util.Optional;
 
 public class SessionsDao {
 
@@ -26,6 +27,13 @@ public class SessionsDao {
     public List<UserSession> findAll() throws HibernateException {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery("FROM UserSession ", UserSession.class).getResultList();
+        }
+    }
+
+    public Optional<UserSession> findById(String id) throws HibernateException {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            UserSession userSession = session.get(UserSession.class,id);
+            return Optional.ofNullable(userSession);
         }
     }
 }

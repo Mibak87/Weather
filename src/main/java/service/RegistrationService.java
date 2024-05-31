@@ -10,10 +10,9 @@ import java.util.Date;
 import java.util.List;
 
 public class RegistrationService {
-    private final int HOURS_BEFORE_SESSION_TIME_EXPIRES = 5;
     public void registration (RegistrationDto registrationDto) {
         User user = new User(registrationDto.getLogin(), registrationDto.getPassword());
-        Date expiresAt = Util.getExpiryDate(HOURS_BEFORE_SESSION_TIME_EXPIRES);
+        Date expiresAt = Util.getExpiryDate();
         UserSession userSession = new UserSession(registrationDto.getId(), user, expiresAt);
         new SessionsDao().save(userSession);
         List<UserSession> userSessions = new SessionsDao().findAll();
