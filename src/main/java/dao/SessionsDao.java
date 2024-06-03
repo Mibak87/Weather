@@ -39,4 +39,17 @@ public class SessionsDao {
             return Optional.ofNullable(userSession);
         }
     }
+
+    public void saveOrUpdate(UserSession userSession) throws HibernateException {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.saveOrUpdate(userSession);
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        }
+    }
 }
