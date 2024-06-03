@@ -1,5 +1,6 @@
 package dao;
 
+import jakarta.persistence.NoResultException;
 import model.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -15,6 +16,18 @@ public class UsersDao {
                     .setParameter("login", login)
                     .getSingleResult();
             return Optional.ofNullable(user);
+        }
+    }
+
+    public boolean checkByLogin(String login) throws HibernateException {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String query = "FROM User WHERE login = :login";
+            User user = session.createQuery(query, User.class)
+                    .setParameter("login", login)
+                    .getSingleResult();
+            return true;
+        } catch (NoResultException e) {
+            return false;
         }
     }
 }

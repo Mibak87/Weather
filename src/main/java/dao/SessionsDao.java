@@ -1,9 +1,11 @@
 package dao;
 
+import exceptions.UserAlreadyExistsException;
 import model.UserSession;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.exception.ConstraintViolationException;
 import utils.HibernateUtil;
 
 import java.util.List;
@@ -11,16 +13,17 @@ import java.util.Optional;
 
 public class SessionsDao {
 
-    public void save(UserSession userSession) throws HibernateException {
+    public void save(UserSession userSession) throws UserAlreadyExistsException {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.persist(userSession);
             transaction.commit();
-        } catch (HibernateException e) {
+        } catch (ConstraintViolationException e) {
             if (transaction != null) {
                 transaction.rollback();
             }
+            throw new UserAlreadyExistsException("The User already exists!");
         }
     }
 

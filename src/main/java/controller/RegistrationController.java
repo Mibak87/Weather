@@ -1,6 +1,7 @@
 package controller;
 
 import dto.RegistrationDto;
+import exceptions.UserAlreadyExistsException;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -38,8 +39,13 @@ public class RegistrationController extends HttpServlet {
                 HttpSession session = request.getSession();
                 String sessionId = session.getId();
                 RegistrationDto registrationDto = new RegistrationDto(sessionId,login,password);
-                new RegistrationService().registration(registrationDto);
-                response.sendRedirect("weather");
+                try {
+                    new RegistrationService().registration(registrationDto);
+                    response.sendRedirect("weather");
+                } catch (UserAlreadyExistsException e) {
+                    response.sendRedirect("registration");
+                }
+
             }
         }
     }
