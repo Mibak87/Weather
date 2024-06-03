@@ -32,21 +32,21 @@ public class RegistrationController extends HttpServlet {
         logger.info("Password2: " + passwordRepeat);
         if (login.isEmpty() || password.isEmpty()) {
             logger.info("The fields should not be empty!");
+        } else if (!password.equals(passwordRepeat)) {
+            logger.info("Passwords don't match!");
+        } else if (password.length() < 3) {
+            logger.info("The password is too short!");
         } else {
-            if (!password.equals(passwordRepeat)) {
-                logger.info("Passwords don't match!");
-            } else {
-                HttpSession session = request.getSession();
-                String sessionId = session.getId();
-                RegistrationDto registrationDto = new RegistrationDto(sessionId,login,password);
-                try {
-                    new RegistrationService().registration(registrationDto);
-                    response.sendRedirect("weather");
-                } catch (UserAlreadyExistsException e) {
-                    response.sendRedirect("registration");
-                }
-
+            HttpSession session = request.getSession();
+            String sessionId = session.getId();
+            RegistrationDto registrationDto = new RegistrationDto(sessionId, login, password);
+            try {
+                new RegistrationService().registration(registrationDto);
+                response.sendRedirect("weather");
+            } catch (UserAlreadyExistsException e) {
+                response.sendRedirect("registration");
             }
+
         }
     }
 }
