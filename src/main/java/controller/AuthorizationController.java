@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.*;
-import java.util.Date;
 
 import exceptions.UserNotFoundException;
 import jakarta.servlet.RequestDispatcher;
