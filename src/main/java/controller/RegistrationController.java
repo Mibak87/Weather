@@ -1,14 +1,16 @@
 package controller;
 
-import dto.RegistrationDto;
 import exceptions.UserAlreadyExistsException;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
+import model.User;
+import model.UserSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import service.RegistrationService;
+import utils.Util;
 
 import java.io.IOException;
 
@@ -39,9 +41,10 @@ public class RegistrationController extends HttpServlet {
         } else {
             HttpSession session = request.getSession();
             String sessionId = session.getId();
-            RegistrationDto registrationDto = new RegistrationDto(sessionId, login, password);
+            User user = new User(login,password);
+            UserSession userSession = new UserSession(sessionId,user, Util.getExpiryDate());
             try {
-                new RegistrationService().registration(registrationDto);
+                new RegistrationService().registration(userSession);
                 response.sendRedirect("weather");
             } catch (UserAlreadyExistsException e) {
                 response.sendRedirect("registration");
