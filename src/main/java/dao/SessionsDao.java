@@ -52,4 +52,18 @@ public class SessionsDao {
             }
         }
     }
+
+    public void delete(String id) throws HibernateException {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            UserSession userSession = session.get(UserSession.class,id);
+            session.remove(userSession);
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        }
+    }
 }

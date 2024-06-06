@@ -17,7 +17,7 @@ public class UserSession {
     @Column(name = "ID")
     private String id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "UserID")
     private User user;
 
