@@ -29,6 +29,7 @@ public class WeatherController extends HttpServlet {
             if (new Date().after(userSession.getExpiresAt())) {
                 response.sendRedirect("authorization");
             } else {
+
                 RequestDispatcher dispatcher = request.getRequestDispatcher("weather.html");
                 dispatcher.forward(request, response);
             }
