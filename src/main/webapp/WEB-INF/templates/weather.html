@@ -11,8 +11,7 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <a href="#" class="navbar-brand">Погода</a>
-            <h5 th:text="${userName}">Вы зашли как юзер</h5>
-            <h5 th:inline="text">Вы зашли как [[${userName}]]</h5>
+            Вы зашли как <label th:text="${userName}"></label>
             <a href="logout"><button type="submit" class="btn btn-default">Выйти</button></a>
         </div>
     </div>

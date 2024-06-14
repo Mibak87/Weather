@@ -20,7 +20,7 @@ public class AuthorizationController extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         logger.info("AuthorizationController, Get");
-        RequestDispatcher dispatcher = request.getRequestDispatcher("index.html");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/templates/index.html");
         dispatcher.forward(request,response);
     }
 

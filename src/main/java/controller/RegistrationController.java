@@ -20,7 +20,7 @@ public class RegistrationController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         logger.info("RegistrationController, Get");
-        RequestDispatcher dispatcher = request.getRequestDispatcher("registration.html");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/templates/registration.html");
         dispatcher.forward(request,response);
     }
 
