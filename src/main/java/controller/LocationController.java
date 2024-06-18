@@ -7,6 +7,11 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
+import org.thymeleaf.web.IWebExchange;
+import org.thymeleaf.web.servlet.JakartaServletWebApplication;
+import utils.ThymeleafUtil;
 import utils.Util;
 
 import java.io.BufferedReader;
@@ -44,7 +49,15 @@ public class LocationController extends HttpServlet {
                 WeatherResponseDto weatherResponseDto = objectMapper
                         .readValue(responseData.toString(), WeatherResponseDto.class);
                 logger.info(weatherResponseDto.toString());
-                response.sendRedirect("weather");
+                TemplateEngine templateEngine = (TemplateEngine) getServletContext()
+                        .getAttribute(ThymeleafUtil.TEMPLATE_ENGINE_ATTR);
+                IWebExchange webExchange = JakartaServletWebApplication.buildApplication(getServletContext())
+                        .buildExchange(request, response);
+                WebContext context = new WebContext(webExchange);
+                context.setVariable("weatherResponse", weatherResponseDto);
+                templateEngine.process("location",context,response.getWriter());
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/templates/location.html");
+                dispatcher.forward(request, response);
             }
         } else {
             //Обработка ошибки
