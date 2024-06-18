@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Погода</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="#" class="navbar-brand">Погода</a>
+            Вы зашли как <label th:text="${userName}"></label>
+            <a href="logout"><button type="submit" class="btn btn-default">Выйти</button></a>
+        </div>
+    </div>
+</nav>
+<h3>Найденные локации</h3>
+<form action="location" method="post">
+    <div class="mb-3">
+        <input type="text" name="location" class="form-email" id="location">
+        <button type="submit" class="btn btn-primary">Поиск</button>
+    </div>
+</form>
+<div class="container border border-primary">
+    <form action="addinglocation" method="post">
+        <p>
+            <label>Город: </label>
+            <label th:text="${weatherResponse.getName()}"></label>
+            <br>
+            <label>Координаты: </label>
+            <br>
+            <label>Longitude: </label>
+            <label th:text="${weatherResponse.getCoord().getLon()}"></label>
+            <br>
+            <label>Latitude: </label>
+            <label th:text="${weatherResponse.getCoord().getLat()}"></label>
+            <br>
+            <label>Страна: </label>
+            <label th:text="${weatherResponse.getSys().getCountry()}"></label>
+        </p>
+
+        <div class="mb-3">
+            <input type="text" id="city" class="form-email border-0" th:value="${weatherResponse.getName()}" hidden>
+            <input type="text" id="lon" class="form-email border-0" th:value="${weatherResponse.getCoord().getLon()}" hidden>
+            <input type="text" id="lat" class="form-email border-0" th:value="${weatherResponse.getCoord().getLat()}" hidden>
+            <input type="text" id="country" class="form-email border-0" th:value="${weatherResponse.getSys().getCountry()}" hidden>
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
