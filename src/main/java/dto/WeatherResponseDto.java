@@ -18,5 +18,6 @@ public class WeatherResponseDto {
     private Rain rain;
     private Snow snow;
     private Clouds clouds;
+    private Sys sys;
     private String name;
 }
