@@ -1,6 +1,7 @@
 package controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dto.CitiesResponseDto;
 import dto.WeatherResponseDto;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -31,8 +32,8 @@ public class LocationController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String location = request.getParameter("location");
-        URL url = new URL(Util.getApiUrl(location));
-        logger.info("ApiUrl: " + Util.getApiUrl(location));
+        URL url = new URL(Util.getCitiesApiUrl(location));
+        logger.info("ApiUrl: " + Util.getCitiesApiUrl(location));
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         int responseCode = connection.getResponseCode();
@@ -46,15 +47,15 @@ public class LocationController extends HttpServlet {
                 }
                 logger.info(responseData.toString());
                 ObjectMapper objectMapper = new ObjectMapper();
-                WeatherResponseDto weatherResponseDto = objectMapper
-                        .readValue(responseData.toString(), WeatherResponseDto.class);
-                logger.info(weatherResponseDto.toString());
+                CitiesResponseDto[] citiesResponseDto = objectMapper
+                        .readValue(responseData.toString(), CitiesResponseDto[].class);
+                logger.info(citiesResponseDto.toString());
                 TemplateEngine templateEngine = (TemplateEngine) getServletContext()
                         .getAttribute(ThymeleafUtil.TEMPLATE_ENGINE_ATTR);
                 IWebExchange webExchange = JakartaServletWebApplication.buildApplication(getServletContext())
                         .buildExchange(request, response);
                 WebContext context = new WebContext(webExchange);
-                context.setVariable("weatherResponse", weatherResponseDto);
+                context.setVariable("citiesResponse", citiesResponseDto);
                 templateEngine.process("location",context,response.getWriter());
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/templates/location.html");
                 dispatcher.forward(request, response);
