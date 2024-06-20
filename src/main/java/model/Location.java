@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -19,13 +20,13 @@ public class Location {
     @Column(name = "Name")
     private String name;
 
-    @OneToMany
+    @ManyToMany
     @JoinColumn(name = "UserID")
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
 
     @Column(name = "Latitude")
-    private long latitude;
+    private Double latitude;
 
     @Column(name = "Longitude")
-    private long longitude;
+    private Double longitude;
 }
