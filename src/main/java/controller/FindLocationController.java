@@ -2,7 +2,6 @@ package controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dto.CitiesResponseDto;
-import dto.WeatherResponseDto;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -21,9 +20,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-@WebServlet(name = "LocationController", value = "/location")
-public class LocationController extends HttpServlet {
-    private static final Logger logger = LogManager.getLogger(LocationController.class);
+@WebServlet(name = "FindLocationController", value = "/location")
+public class FindLocationController extends HttpServlet {
+    private static final Logger logger = LogManager.getLogger(FindLocationController.class);
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

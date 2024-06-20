@@ -1,5 +1,7 @@
 package utils;
 
+import dto.elements.Coord;
+
 import java.util.Date;
 
 public class Util {
@@ -11,10 +13,12 @@ public class Util {
         return new Date(updatedTimeInMillis);
     }
 
-    public static String getApiUrl(String location) {
-        String url = "https://api.openweathermap.org/data/2.5/weather?q=";
+    public static String getCoordsApiUrl(Coord coord) {
+        String url = "https://api.openweathermap.org/data/2.5/weather?";
+        String lat = "lat=" + coord.getLat();
+        String lon = "&lon=" + coord.getLon();
         String units = "&units=metric";
-        String apiUrl = url + location + API_KEY + units;
+        String apiUrl = url + lat + lon + API_KEY + units;
         return apiUrl;
     }
 
