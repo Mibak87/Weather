@@ -1,6 +1,6 @@
 package dao;
 
-import jakarta.persistence.NoResultException;
+import model.Location;
 import model.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -31,6 +31,12 @@ public class UsersDao {
             } else {
                 return true;
             }
+        }
+    }
+
+    public List<User> findAll() throws HibernateException {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM User", User.class).getResultList();
         }
     }
 }

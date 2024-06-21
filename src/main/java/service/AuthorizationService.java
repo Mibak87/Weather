@@ -10,6 +10,7 @@ public class AuthorizationService {
         if (!new UsersDao().checkByLogin(userSession.getUser().getLogin())) {
             throw new UserNotFoundException("This user not found!");
         }
+        userSession.setUser(new UsersDao().findByLogin(userSession.getUser().getLogin()).get());
         new SessionsDao().saveOrUpdate(userSession);
     }
 }

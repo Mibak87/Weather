@@ -44,7 +44,7 @@ public class SessionsDao {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.saveOrUpdate(userSession);
+            session.merge(userSession);
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) {

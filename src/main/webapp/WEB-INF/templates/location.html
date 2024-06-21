@@ -27,7 +27,7 @@
     </form>
     <div th:each="city : ${citiesResponse}">
         <div class="container border border-primary">
-            <form action="addinglocation" method="post">
+            <form action="savelocation" method="post">
                 <p>
                     <label>Город: </label>
                     <label th:text="${city.getName()}"></label>

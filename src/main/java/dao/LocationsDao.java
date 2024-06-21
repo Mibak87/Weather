@@ -26,15 +26,14 @@ public class LocationsDao {
         }
     }
 
-    public Optional<Location> findByCoordinates(Double latitude, Double longitude) {
+    public Location findByCoordinates(Double latitude, Double longitude) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             String hql = "FROM Location l" +
                     " WHERE l.latitude = :latitude AND l.longitude = :longitude";
             Query query = session.createQuery(hql);
             query.setParameter("latitude",latitude);
             query.setParameter("longitude",longitude);
-            Location location = (Location) query.getSingleResult();
-            return Optional.ofNullable(location);
+            return (Location) query.getSingleResult();
         }
     }
 
@@ -46,6 +45,12 @@ public class LocationsDao {
                     .setParameter("login", login)
                     .getResultList();
             return location;
+        }
+    }
+
+    public List<Location> findAll() throws HibernateException {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM Location", Location.class).getResultList();
         }
     }
 }

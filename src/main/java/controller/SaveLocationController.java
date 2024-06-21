@@ -4,12 +4,15 @@ import dto.SaveLocationDto;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import service.SaveLocationService;
 
 import java.io.IOException;
 
 @WebServlet(name = "SaveLocationController", value = "/savelocation")
 public class SaveLocationController extends HttpServlet {
+    private static final Logger logger = LogManager.getLogger(SaveLocationController.class);
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -27,6 +30,7 @@ public class SaveLocationController extends HttpServlet {
                 .lat(lat)
                 .login(userLogin)
                 .build();
+        logger.info("saveLocationDto: " + saveLocationDto.toString());
         new SaveLocationService().saveLocation(saveLocationDto);
         response.sendRedirect("weather");
     }

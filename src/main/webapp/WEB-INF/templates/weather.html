@@ -24,6 +24,39 @@
             <button type="submit" class="btn btn-primary">Поиск</button>
         </div>
     </form>
+    <div th:each="weather : ${weatherDto}">
+        <div class="container border border-primary">
+            <form action="deletelocation" method="post">
+                <p>
+                    <label>Город: </label>
+                    <label th:text="${weather.getName()}"></label>
+                    <br>
+                    <label>Температура: </label>
+                    <label th:text="${weather.getMain().getTemp()}"></label>
+                    <br>
+                    <label>Влажность: </label>
+                    <label th:text="${weather.getMain().getHumidity()}"></label>
+                    <br>
+                    <label>Скорость ветра: </label>
+                    <label th:text="${weather.getWind().getSpeed()}"></label>
+
+                </p>
+
+                <div class="mb-3">
+                    <input type="text" id="city" name="cityName" class="form-email border-0"
+                           th:value="${weather.getName()}" hidden>
+                    <input type="text" id="lon" name="lon" class="form-email border-0"
+                           th:value="${weather.getCoord().getLon()}" hidden>
+                    <input type="text" id="lat" name="lat" class="form-email border-0"
+                           th:value="${weather.getCoord().getLat()}" hidden>
+                    <input type="text" id="user-login" name="userLogin" class="form-email border-0"
+                           th:value="${userName}"
+                           hidden>
+                    <button type="submit" class="btn btn-primary">Удалить</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 </body>
 </html>
