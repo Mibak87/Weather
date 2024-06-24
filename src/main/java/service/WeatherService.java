@@ -2,10 +2,11 @@ package service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.LocationsDao;
-import dto.CitiesResponseDto;
 import dto.WeatherResponseDto;
 import dto.elements.Coord;
 import model.Location;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import utils.Util;
 
 import java.io.BufferedReader;
@@ -17,21 +18,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WeatherService {
-    public List<Coord> getCoordinates(String login) {
-        List<Location> locations = new LocationsDao().findByLogin(login);
+    private static final Logger logger = LogManager.getLogger(WeatherService.class);
+    /*public Coord getCoordinates(Location location) {
+        Coord coord = new Coord(String.valueOf(location.getLongitude()),String.valueOf(location.getLatitude()));
         List<Coord> coords = new ArrayList<>();
         for (Location location : locations) {
             Coord coord = new Coord(String.valueOf(location.getLongitude()),String.valueOf(location.getLatitude()));
             coords.add(coord);
         }
         return coords;
-    }
+    }*/
 
     public List<WeatherResponseDto> getWeather(String login) throws IOException {
         List<WeatherResponseDto> dtoList = new ArrayList<>();
-        List<Coord> coords = getCoordinates(login);
-        for (Coord coord : coords) {
+        List<Location> locations = new LocationsDao().findByLogin(login);
+        for (Location location : locations) {
+            Coord coord = new Coord(String.valueOf(location.getLongitude()),String.valueOf(location.getLatitude()));
             URL url = new URL(Util.getCoordsApiUrl(coord));
+            logger.info("ApiUrl: " + Util.getCoordsApiUrl(coord));
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             int responseCode = connection.getResponseCode();
@@ -42,10 +46,13 @@ public class WeatherService {
                     while ((inputLine = in.readLine()) != null) {
                         responseData.append(inputLine);
                     }
+                    logger.info("responseData(json): " + responseData);
                     ObjectMapper objectMapper = new ObjectMapper();
                     WeatherResponseDto weatherResponseDto = objectMapper
                             .readValue(responseData.toString(), WeatherResponseDto.class);
+                    weatherResponseDto.setLocationId(location.getId());
                     dtoList.add(weatherResponseDto);
+                    logger.info("WeatherResponseDto single: " + weatherResponseDto);
                 }
             } else {
                 //Обработка ошибки

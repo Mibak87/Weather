@@ -22,7 +22,7 @@ public class Location {
     @Column(name = "Name")
     private String name;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "UserID")
     private List<User> users = new ArrayList<>();
 

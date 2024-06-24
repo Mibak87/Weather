@@ -40,6 +40,7 @@ public class WeatherController extends HttpServlet {
                 response.sendRedirect("authorization");
             } else {
                 List<WeatherResponseDto> dtoList = new WeatherService().getWeather(userSession.getUser().getLogin());
+                logger.info("WeatherResponseDto: " + dtoList.toString());
                 TemplateEngine templateEngine = (TemplateEngine) getServletContext()
                         .getAttribute(ThymeleafUtil.TEMPLATE_ENGINE_ATTR);
                 IWebExchange webExchange = JakartaServletWebApplication.buildApplication(getServletContext())

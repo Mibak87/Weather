@@ -6,7 +6,7 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import service.SaveLocationService;
+import service.LocationService;
 
 import java.io.IOException;
 
@@ -31,7 +31,7 @@ public class SaveLocationController extends HttpServlet {
                 .login(userLogin)
                 .build();
         logger.info("saveLocationDto: " + saveLocationDto.toString());
-        new SaveLocationService().saveLocation(saveLocationDto);
+        new LocationService().saveLocation(saveLocationDto);
         response.sendRedirect("weather");
     }
 }

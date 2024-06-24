@@ -13,11 +13,24 @@ import java.util.Optional;
 
 public class LocationsDao {
     public void saveOrUpdate(Location location) throws HibernateException {
-
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.merge(location);
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        }
+    }
+
+    public void delete(long locationId) throws HibernateException {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            Location location = session.get(Location.class,locationId);
+            session.remove(location);
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) {
@@ -51,6 +64,12 @@ public class LocationsDao {
     public List<Location> findAll() throws HibernateException {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery("FROM Location", Location.class).getResultList();
+        }
+    }
+
+    public Location findById(long locationId) throws HibernateException {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.get(Location.class,locationId);
         }
     }
 }
