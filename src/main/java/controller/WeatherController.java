@@ -28,31 +28,20 @@ public class WeatherController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String sessionId = session.getId();
-        logger.info("sessionId: " + sessionId);
-        Optional<UserSession> optionalUserSession = new SessionsDao().findById(sessionId);
-        if (optionalUserSession.isEmpty()) {
-            response.sendRedirect("authorization");
-        } else {
-            UserSession userSession = optionalUserSession.get();
-            if (new Date().after(userSession.getExpiresAt())) {
-                response.sendRedirect("authorization");
-            } else {
-                List<WeatherResponseDto> dtoList = new WeatherService().getWeather(userSession.getUser().getLogin());
-                logger.info("WeatherResponseDto: " + dtoList.toString());
-                TemplateEngine templateEngine = (TemplateEngine) getServletContext()
-                        .getAttribute(ThymeleafUtil.TEMPLATE_ENGINE_ATTR);
-                IWebExchange webExchange = JakartaServletWebApplication.buildApplication(getServletContext())
-                        .buildExchange(request, response);
-                WebContext context = new WebContext(webExchange);
-                context.setVariable("userName", userSession.getUser().getLogin());
-                context.setVariable("weatherDto",dtoList);
-                templateEngine.process("weather",context,response.getWriter());
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/templates/weather.html");
-                dispatcher.forward(request, response);
-            }
-        }
+        String login = request.getParameter("login");
+        List<WeatherResponseDto> dtoList = new WeatherService().getWeather(login);
+        logger.info("WeatherResponseDto: " + dtoList.toString());
+        TemplateEngine templateEngine = (TemplateEngine) getServletContext()
+                .getAttribute(ThymeleafUtil.TEMPLATE_ENGINE_ATTR);
+        IWebExchange webExchange = JakartaServletWebApplication.buildApplication(getServletContext())
+                .buildExchange(request, response);
+        WebContext context = new WebContext(webExchange);
+        context.setVariable("userName", login);
+        context.setVariable("weatherDto", dtoList);
+        templateEngine.process("weather", context, response.getWriter());
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/templates/weather.html");
+        dispatcher.forward(request, response);
+
     }
 
     @Override
