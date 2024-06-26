@@ -1,13 +1,8 @@
 package controller;
 
-import dao.LocationsDao;
-import dao.SessionsDao;
 import dto.WeatherResponseDto;
-import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import model.Location;
-import model.UserSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.thymeleaf.TemplateEngine;
@@ -18,17 +13,16 @@ import service.WeatherService;
 import utils.ThymeleafUtil;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @WebServlet(name = "WeatherController", value = "/weather")
 public class WeatherController extends HttpServlet {
     private static final Logger logger = LogManager.getLogger(WeatherController.class);
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String login = request.getParameter("login");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String login = (String) request.getAttribute("login");
+        logger.info("Login: " + login);
         List<WeatherResponseDto> dtoList = new WeatherService().getWeather(login);
         logger.info("WeatherResponseDto: " + dtoList.toString());
         TemplateEngine templateEngine = (TemplateEngine) getServletContext()
@@ -39,13 +33,10 @@ public class WeatherController extends HttpServlet {
         context.setVariable("userName", login);
         context.setVariable("weatherDto", dtoList);
         templateEngine.process("weather", context, response.getWriter());
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/templates/weather.html");
-        dispatcher.forward(request, response);
-
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 
     }
 }
