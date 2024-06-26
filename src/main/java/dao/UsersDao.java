@@ -34,9 +34,17 @@ public class UsersDao {
         }
     }
 
-    public List<User> findAll() throws HibernateException {
+    public boolean checkByPassword(String password) throws HibernateException {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM User", User.class).getResultList();
+            String query = "FROM User WHERE password = :password";
+            List<User> user = session.createQuery(query, User.class)
+                    .setParameter("password", password)
+                    .getResultList();
+            if (user.isEmpty()) {
+                return false;
+            } else {
+                return true;
+            }
         }
     }
 }
