@@ -12,6 +12,7 @@ import model.User;
 import model.UserSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mindrot.jbcrypt.BCrypt;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.web.IWebExchange;
@@ -46,10 +47,11 @@ public class AuthorizationController extends HttpServlet {
             context.setVariable("error","Поля не должны быть пустыми!");
             templateEngine.process("authorization", context, response.getWriter());
         } else {
+
             HttpSession session = request.getSession();
             String sessionId = session.getId();
-            User user = new User(login,password);
-            UserSession userSession = new UserSession(sessionId,user, Util.getExpiryDate());
+            User authorizingUser = new User(login,password);
+            UserSession userSession = new UserSession(sessionId,authorizingUser, Util.getExpiryDate());
             try {
                 new AuthorizationService().authorize(userSession);
                 logger.info("Authorization by user '" + login + "' was successful!");

@@ -18,8 +18,7 @@ public class LocationService {
     public void saveLocation(SaveLocationDto saveLocationDto) throws UserNotFoundException {
         Double lon = Double.parseDouble(saveLocationDto.getLon());
         Double lat = Double.parseDouble(saveLocationDto.getLat());
-        User user = new UsersDao().findByLogin(saveLocationDto.getLogin())
-                .orElseThrow(()->new UserNotFoundException("User is not found!"));
+        User user = new UsersDao().findByLogin(saveLocationDto.getLogin());
         Location location = new Location();
         List<User> users = new ArrayList<>();
         try {
@@ -38,8 +37,7 @@ public class LocationService {
     }
 
     public void deleteLocation(long locationId, String userLogin) {
-        User user = new UsersDao().findByLogin(userLogin)
-                .orElseThrow(()->new UserNotFoundException("User is not found!"));
+        User user = new UsersDao().findByLogin(userLogin);
         Location location = new LocationsDao().findById(locationId);
         logger.info("Location for delete: " + location);
         List<User> users = location.getUsers();

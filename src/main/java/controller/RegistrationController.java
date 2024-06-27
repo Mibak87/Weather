@@ -9,6 +9,7 @@ import model.User;
 import model.UserSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mindrot.jbcrypt.BCrypt;
 import service.RegistrationService;
 import utils.Util;
 
@@ -39,9 +40,10 @@ public class RegistrationController extends HttpServlet {
         } else if (password.length() < 3) {
             logger.info("The password is too short!");
         } else {
+            String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
             HttpSession session = request.getSession();
             String sessionId = session.getId();
-            User user = new User(login,password);
+            User user = new User(login,hashedPassword);
             UserSession userSession = new UserSession(sessionId,user, Util.getExpiryDate());
             try {
                 new RegistrationService().registration(userSession);

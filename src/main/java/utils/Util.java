@@ -1,6 +1,7 @@
 package utils;
 
 import dto.elements.Coord;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Date;
 

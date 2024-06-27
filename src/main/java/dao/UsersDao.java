@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class UsersDao {
-    public Optional<User> findByLogin(String login) throws HibernateException {
+    public User findByLogin(String login) throws HibernateException {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             String query = "FROM User WHERE login = :login";
             User user = session.createQuery(query, User.class)
                     .setParameter("login", login)
                     .getSingleResult();
-            return Optional.ofNullable(user);
+            return user;
         }
     }
 
