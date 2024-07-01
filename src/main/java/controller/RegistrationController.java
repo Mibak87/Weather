@@ -43,6 +43,8 @@ public class RegistrationController extends HttpServlet {
             String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
             HttpSession session = request.getSession();
             String sessionId = session.getId();
+            Cookie cookie = new Cookie("sessionId",sessionId);
+            response.addCookie(cookie);
             User user = new User(login,hashedPassword);
             UserSession userSession = new UserSession(sessionId,user, Util.getExpiryDate());
             try {

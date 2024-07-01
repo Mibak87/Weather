@@ -47,9 +47,10 @@ public class AuthorizationController extends HttpServlet {
             context.setVariable("error","Поля не должны быть пустыми!");
             templateEngine.process("authorization", context, response.getWriter());
         } else {
-
             HttpSession session = request.getSession();
             String sessionId = session.getId();
+            Cookie cookie = new Cookie("sessionId",sessionId);
+            response.addCookie(cookie);
             User authorizingUser = new User(login,password);
             UserSession userSession = new UserSession(sessionId,authorizingUser, Util.getExpiryDate());
             try {

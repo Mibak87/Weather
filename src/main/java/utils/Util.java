@@ -1,7 +1,7 @@
 package utils;
 
 import dto.elements.Coord;
-import org.mindrot.jbcrypt.BCrypt;
+import jakarta.servlet.http.Cookie;
 
 import java.util.Date;
 
@@ -28,5 +28,16 @@ public class Util {
         String limit = "&limit=5";
         String citiesApiUrl = url + location + limit + API_KEY;
         return citiesApiUrl;
+    }
+
+    public static String getSessionIdFromCookies(Cookie[] cookies) {
+        if(cookies !=null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("sessionId")) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return "";
     }
 }
