@@ -15,14 +15,18 @@ import java.util.List;
 
 public class LocationService {
     private static final Logger logger = LogManager.getLogger(LocationService.class);
+
+    private UsersDao usersDao = new UsersDao();
+    private LocationsDao locationsDao = new LocationsDao();
+
     public void saveLocation(SaveLocationDto saveLocationDto) throws UserNotFoundException {
         Double lon = Double.parseDouble(saveLocationDto.getLon());
         Double lat = Double.parseDouble(saveLocationDto.getLat());
-        User user = new UsersDao().findByLogin(saveLocationDto.getLogin());
+        User user = usersDao.findByLogin(saveLocationDto.getLogin());
         Location location = new Location();
         List<User> users = new ArrayList<>();
         try {
-            location = new LocationsDao().findByCoordinates(lat, lon);
+            location = locationsDao.findByCoordinates(lat, lon);
             logger.info("Finding location: " + location);
             users = location.getUsers();
         } catch (NoResultException e) {
@@ -33,20 +37,20 @@ public class LocationService {
         users.add(user);
         location.setUsers(users);
         logger.info("Location for saving: " + location);
-        new LocationsDao().saveOrUpdate(location);
+        locationsDao.saveOrUpdate(location);
     }
 
     public void deleteLocation(long locationId, String userLogin) {
-        User user = new UsersDao().findByLogin(userLogin);
-        Location location = new LocationsDao().findById(locationId);
+        User user = usersDao.findByLogin(userLogin);
+        Location location = locationsDao.findById(locationId);
         logger.info("Location for delete: " + location);
         List<User> users = location.getUsers();
         if (users.size() > 1) {
             users.remove(user);
             location.setUsers(users);
-            new LocationsDao().saveOrUpdate(location);
+            locationsDao.saveOrUpdate(location);
         } else {
-            new LocationsDao().delete(locationId);
+            locationsDao.delete(locationId);
         }
     }
 }

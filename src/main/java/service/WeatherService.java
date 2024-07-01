@@ -19,19 +19,12 @@ import java.util.List;
 
 public class WeatherService {
     private static final Logger logger = LogManager.getLogger(WeatherService.class);
-    /*public Coord getCoordinates(Location location) {
-        Coord coord = new Coord(String.valueOf(location.getLongitude()),String.valueOf(location.getLatitude()));
-        List<Coord> coords = new ArrayList<>();
-        for (Location location : locations) {
-            Coord coord = new Coord(String.valueOf(location.getLongitude()),String.valueOf(location.getLatitude()));
-            coords.add(coord);
-        }
-        return coords;
-    }*/
+
+    private LocationsDao locationsDao = new LocationsDao();
 
     public List<WeatherResponseDto> getWeather(String login) throws IOException {
         List<WeatherResponseDto> dtoList = new ArrayList<>();
-        List<Location> locations = new LocationsDao().findByLogin(login);
+        List<Location> locations = locationsDao.findByLogin(login);
         for (Location location : locations) {
             Coord coord = new Coord(String.valueOf(location.getLongitude()),String.valueOf(location.getLatitude()));
             URL url = new URL(Util.getCoordsApiUrl(coord));

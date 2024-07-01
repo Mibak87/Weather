@@ -9,15 +9,17 @@ import model.UserSession;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class AuthorizationService {
+    private UsersDao usersDao = new UsersDao();
+    private SessionsDao sessionsDao = new SessionsDao();
     public void authorize(UserSession userSession) throws UserNotFoundException {
-        if (!new UsersDao().checkByLogin(userSession.getUser().getLogin())) {
+        if (!usersDao.checkByLogin(userSession.getUser().getLogin())) {
             throw new UserNotFoundException("This user not found!");
         }
-        User user = new UsersDao().findByLogin(userSession.getUser().getLogin());
+        User user = usersDao.findByLogin(userSession.getUser().getLogin());
         if (!BCrypt.checkpw(userSession.getUser().getPassword(),user.getPassword())) {
             throw new WrongPasswordException("The password is wrong!");
         }
         userSession.setUser(user);
-        new SessionsDao().saveOrUpdate(userSession);
+        sessionsDao.saveOrUpdate(userSession);
     }
 }
