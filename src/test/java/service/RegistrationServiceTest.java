@@ -6,7 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import utils.HibernateH2Util;
+import utils.HibernateUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -26,12 +26,25 @@ class RegistrationServiceTest {
 
     @Test
     void registration_saveUserSession_saveUser() {
-        Session session = HibernateH2Util.getSessionFactory().openSession();
-        Transaction transaction = session.beginTransaction();
-        session.persist(userSession);
-        transaction.commit();
+        new RegistrationService().registration(userSession);
+        Session session = HibernateUtil.getSessionFactory().openSession();
         List<User> userList = session.createQuery("FROM User", User.class).getResultList();
         session.close();
         assertEquals(1, userList.size());
     }
+
+    /*@Test
+    void registration_saveUserSessionWithNotUniqueUser_UserAlreadyExistsException() {
+        Session session = HibernateH2Util.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        session.persist(userSession);
+        transaction.commit();
+        User notUniqueUser = new User("Vasya","456");
+        Date date = new Date(new Date().getTime());
+        UserSession newUserSession = new UserSession("1",notUniqueUser, date);
+        transaction = session.beginTransaction();
+        session.persist(newUserSession);
+        transaction.commit();
+        session.close();
+    }*/
 }
