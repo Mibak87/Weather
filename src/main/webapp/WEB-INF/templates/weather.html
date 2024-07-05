@@ -24,6 +24,7 @@
             <button type="submit" class="btn btn-primary">Поиск</button>
         </div>
     </form>
+    <label th:text="${noLocations}"></label>
     <div th:each="weather : ${weatherDto}">
         <div class="container border border-primary">
             <form action="deletelocation" method="post">

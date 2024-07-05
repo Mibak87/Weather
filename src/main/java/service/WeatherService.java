@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.LocationsDao;
 import dto.WeatherResponseDto;
 import dto.elements.Coord;
+import exceptions.ErrorApiConnectionException;
 import model.Location;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,12 +18,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WeatherService {
+public class WeatherService  {
     private static final Logger logger = LogManager.getLogger(WeatherService.class);
 
     private LocationsDao locationsDao = new LocationsDao();
 
-    public List<WeatherResponseDto> getWeather(String login) throws IOException {
+    public List<WeatherResponseDto> getWeather(String login) throws IOException, ErrorApiConnectionException {
         List<WeatherResponseDto> dtoList = new ArrayList<>();
         List<Location> locations = locationsDao.findByLogin(login);
         for (Location location : locations) {
@@ -48,7 +49,7 @@ public class WeatherService {
                     logger.info("WeatherResponseDto single: " + weatherResponseDto);
                 }
             } else {
-                //Обработка ошибки
+                throw new ErrorApiConnectionException("Error of connection to WeatherAPI.");
             }
         }
         return dtoList;
