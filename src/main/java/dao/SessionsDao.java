@@ -1,6 +1,7 @@
 package dao;
 
 import exceptions.UserAlreadyExistsException;
+import jakarta.persistence.PersistenceException;
 import model.UserSession;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -17,13 +18,20 @@ public class SessionsDao {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.persist(userSession);
-            transaction.commit();
-        } catch (ConstraintViolationException e) {
-            if (transaction != null) {
-                transaction.rollback();
+            try {
+                session.persist(userSession);
+                transaction.commit();
+            } catch (PersistenceException e) {
+                if (transaction != null) {
+                    transaction.rollback();
+                }
+                throw e;
             }
-            throw new UserAlreadyExistsException("The User already exists!");
+        } catch (PersistenceException e) {
+            if (e.getCause() instanceof ConstraintViolationException cEx) {
+                System.out.println("ConstraintViolationException");
+                throw new UserAlreadyExistsException("The User already exists!");
+            }
         }
     }
 

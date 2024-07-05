@@ -49,8 +49,10 @@ public class RegistrationController extends HttpServlet {
             UserSession userSession = new UserSession(sessionId,user, Util.getExpiryDate());
             try {
                 new RegistrationService().registration(userSession);
+                logger.info("Registration of user '" + login + "' is successful!");
                 response.sendRedirect("weather");
             } catch (UserAlreadyExistsException e) {
+                logger.info("User with login '" + login + "' already exists!");
                 response.sendRedirect("registration");
             }
 
