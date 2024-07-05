@@ -10,7 +10,12 @@ import model.UserSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mindrot.jbcrypt.BCrypt;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
+import org.thymeleaf.web.IWebExchange;
+import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 import service.RegistrationService;
+import utils.ThymeleafUtil;
 import utils.Util;
 
 import java.io.IOException;
@@ -27,6 +32,12 @@ public class RegistrationController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        TemplateEngine templateEngine = (TemplateEngine) getServletContext()
+                .getAttribute(ThymeleafUtil.TEMPLATE_ENGINE_ATTR);
+        IWebExchange webExchange = JakartaServletWebApplication.buildApplication(getServletContext())
+                .buildExchange(request, response);
+        WebContext context = new WebContext(webExchange);
+
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         String passwordRepeat = request.getParameter("passwordRepeat");
@@ -35,10 +46,16 @@ public class RegistrationController extends HttpServlet {
         logger.info("Password2: " + passwordRepeat);
         if (login.isEmpty() || password.isEmpty()) {
             logger.info("The fields should not be empty!");
+            context.setVariable("error","Поля не должны быть пустыми!");
+            templateEngine.process("registration", context, response.getWriter());
         } else if (!password.equals(passwordRepeat)) {
             logger.info("Passwords don't match!");
+            context.setVariable("passwordError","Пароли не совпадают!");
+            templateEngine.process("registration", context, response.getWriter());
         } else if (password.length() < 3) {
             logger.info("The password is too short!");
+            context.setVariable("passwordLengthError","Пароль слишком короткий!");
+            templateEngine.process("registration", context, response.getWriter());
         } else {
             String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
             HttpSession session = request.getSession();
@@ -53,7 +70,8 @@ public class RegistrationController extends HttpServlet {
                 response.sendRedirect("weather");
             } catch (UserAlreadyExistsException e) {
                 logger.info("User with login '" + login + "' already exists!");
-                response.sendRedirect("registration");
+                context.setVariable("userError","Пользователь с таким логином уже существует!");
+                templateEngine.process("registration", context, response.getWriter());
             }
 
         }
