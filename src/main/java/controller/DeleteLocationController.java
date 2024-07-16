@@ -20,8 +20,7 @@ public class DeleteLocationController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         long locationId = Long.parseLong(request.getParameter("locationId"));
-        String userLogin = request.getParameter("userLogin");
-        new LocationService().deleteLocation(locationId,userLogin);
+        new LocationService().deleteLocation(locationId);
         response.sendRedirect("weather");
     }
 }

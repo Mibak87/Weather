@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -22,9 +20,9 @@ public class Location {
     @Column(name = "Name")
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "UserID")
-    private List<User> users = new ArrayList<>();
+    private User user;
 
     @Column(name = "Latitude")
     private Double latitude;
