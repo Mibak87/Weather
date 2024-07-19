@@ -15,6 +15,7 @@ public class Util {
     }
 
     public static String getCoordsApiUrl(Coord coord) {
+        //String api_key = System.getenv("API_KEY");
         String url = "https://api.openweathermap.org/data/2.5/weather?";
         String lat = "lat=" + coord.getLat();
         String lon = "&lon=" + coord.getLon();
@@ -24,6 +25,8 @@ public class Util {
     }
 
     public static String getCitiesApiUrl(String location) {
+        //Херня какая-то с переменной окружения
+        //String api_key = System.getenv("API_KEY");
         String url = "https://api.openweathermap.org/geo/1.0/direct?q=";
         String limit = "&limit=5";
         String citiesApiUrl = url + location + limit + API_KEY;

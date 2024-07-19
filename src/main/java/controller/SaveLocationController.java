@@ -23,6 +23,7 @@ public class SaveLocationController extends HttpServlet {
         String cityName = request.getParameter("cityName");
         String lon = request.getParameter("lon");
         String lat = request.getParameter("lat");
+        //Логин брать из сессии
         String userLogin = request.getParameter("userLogin");
         SaveLocationDto saveLocationDto = SaveLocationDto.builder()
                 .cityName(cityName)

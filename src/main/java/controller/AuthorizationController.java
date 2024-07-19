@@ -59,11 +59,11 @@ public class AuthorizationController extends HttpServlet {
                 response.sendRedirect("weather");
             } catch (UserNotFoundException e) {
                 logger.info("User '" + login + "' is not found!");
-                context.setVariable("userError","Пользователь с таким логином не найден!");
+                context.setVariable("error","Неправильные логин или пароль!");
                 templateEngine.process("authorization", context, response.getWriter());
             } catch (WrongPasswordException e) {
                 logger.info("Password for '" + login + "' is wrong!");
-                context.setVariable("passwordError","Неверный пароль!");
+                context.setVariable("error","Неправильные логин или пароль!");
                 templateEngine.process("authorization", context, response.getWriter());
             }
         }

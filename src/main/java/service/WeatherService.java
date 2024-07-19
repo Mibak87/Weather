@@ -45,6 +45,8 @@ public class WeatherService  {
                     WeatherResponseDto weatherResponseDto = objectMapper
                             .readValue(responseData.toString(), WeatherResponseDto.class);
                     weatherResponseDto.setLocationId(location.getId());
+                    weatherResponseDto.setName(location.getName());
+                    weatherResponseDto.setCoord(coord);
                     dtoList.add(weatherResponseDto);
                     logger.info("WeatherResponseDto single: " + weatherResponseDto);
                 }
