@@ -14,19 +14,15 @@ import lombok.ToString;
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
     private long id;
 
-    @Column(name = "Name")
     private String name;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "UserID")
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "Latitude")
     private Double latitude;
 
-    @Column(name = "Longitude")
     private Double longitude;
 }

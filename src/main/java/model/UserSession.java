@@ -14,14 +14,13 @@ import java.util.Date;
 @Table(name = "Sessions")
 public class UserSession {
     @Id
-    @Column(name = "ID")
     private String id;
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "UserID")
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "ExpiresAt")
+    @Column(name = "expires_at")
     private Date expiresAt;
 
     public UserSession() {
