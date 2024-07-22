@@ -25,6 +25,7 @@
             <button type="submit" class="btn btn-primary">Поиск</button>
         </div>
     </form>
+    <label style="color: red" th:text="${error}"></label>
     <div th:each="city : ${citiesResponse}">
         <div class="container border border-primary">
             <form action="savelocation" method="post">

@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet(name = "WeatherController", value = "/weather")
-public class WeatherController extends HttpServlet {
+public class WeatherController extends BaseController {
     private static final Logger logger = LogManager.getLogger(WeatherController.class);
 
     @Override
