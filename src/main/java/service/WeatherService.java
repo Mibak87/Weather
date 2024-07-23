@@ -8,6 +8,7 @@ import model.Location;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.net.http.HttpClient;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,8 @@ public class WeatherService  {
         List<Location> locations = locationsDao.findByLogin(login);
         for (Location location : locations) {
             Coord coord = new Coord(String.valueOf(location.getLongitude()), String.valueOf(location.getLatitude()));
-            WeatherResponseDto weatherResponseDto = new OpenWeatherApiService().getWeather(coord);
+            HttpClient httpClient = HttpClient.newHttpClient();
+            WeatherResponseDto weatherResponseDto = new OpenWeatherApiService(httpClient).getWeather(coord);
             weatherResponseDto.setLocationId(location.getId());
             weatherResponseDto.setName(location.getName());
             weatherResponseDto.setCoord(coord);

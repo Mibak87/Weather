@@ -13,8 +13,12 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class OpenWeatherApiService {
-    private final HttpClient httpClient = HttpClient.newHttpClient();
+    private final HttpClient httpClient;
     private final ObjectMapper objectMapper = new ObjectMapper();
+
+    public OpenWeatherApiService(HttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
 
     public CitiesResponseDto[] getCities(String location) throws ErrorApiConnectionException {
         try {

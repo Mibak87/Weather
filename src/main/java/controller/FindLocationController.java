@@ -17,6 +17,7 @@ import service.OpenWeatherApiService;
 import utils.ThymeleafUtil;
 
 import java.io.IOException;
+import java.net.http.HttpClient;
 import java.util.Date;
 import java.util.Optional;
 
@@ -50,7 +51,8 @@ public class FindLocationController extends HttpServlet {
                     templateEngine.process("location", context, response.getWriter());
                 } else {
                     try {
-                        CitiesResponseDto[] citiesResponseDto = new OpenWeatherApiService().getCities(location);
+                        HttpClient httpClient = HttpClient.newHttpClient();
+                        CitiesResponseDto[] citiesResponseDto = new OpenWeatherApiService(httpClient).getCities(location);
                         logger.info(citiesResponseDto.toString());
                         context.setVariable("userName", userSession.getUser().getLogin());
                         context.setVariable("citiesResponse", citiesResponseDto);
