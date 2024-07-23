@@ -1,5 +1,8 @@
 package controller;
 
+import exceptions.UserAlreadyExistsException;
+import exceptions.UserNotFoundException;
+import exceptions.WrongPasswordException;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import org.thymeleaf.TemplateEngine;
@@ -26,6 +29,15 @@ public class BaseController extends HttpServlet {
         IWebExchange webExchange = JakartaServletWebApplication.buildApplication(getServletContext())
                 .buildExchange(request, response);
         context = new WebContext(webExchange);
-        super.service(request, response);
+
+        try {
+            super.service(request, response);
+        } catch (UserNotFoundException | WrongPasswordException e) {
+            context.setVariable("error","Неправильные логин или пароль!");
+            templateEngine.process("authorization", context, response.getWriter());
+        } catch (UserAlreadyExistsException e) {
+            context.setVariable("userError","Пользователь с таким логином уже существует!");
+            templateEngine.process("registration", context, response.getWriter());
+        }
     }
 }

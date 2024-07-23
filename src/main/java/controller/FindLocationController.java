@@ -25,7 +25,7 @@ public class FindLocationController extends BaseController {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String sessionId = request.getSession().getId();
         Optional<UserSession> optionalUserSession = new SessionsDao().findById(sessionId);
         if (optionalUserSession.isEmpty()) {
@@ -41,8 +41,7 @@ public class FindLocationController extends BaseController {
                     templateEngine.process("location", context, response.getWriter());
                 } else {
                     try {
-                        HttpClient httpClient = HttpClient.newHttpClient();
-                        CitiesResponseDto[] citiesResponseDto = new OpenWeatherApiService(httpClient).getCities(location);
+                        CitiesResponseDto[] citiesResponseDto = openWeatherApiService.getCities(location);
                         logger.info(citiesResponseDto.toString());
                         context.setVariable("userName", userSession.getUser().getLogin());
                         context.setVariable("citiesResponse", citiesResponseDto);

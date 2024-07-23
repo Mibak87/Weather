@@ -25,7 +25,8 @@ public class AuthorizationController extends BaseController {
         dispatcher.forward(request,response);
     }
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, UserNotFoundException, WrongPasswordException {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         logger.info("Login: " + login);
@@ -41,19 +42,8 @@ public class AuthorizationController extends BaseController {
             response.addCookie(cookie);
             User authorizingUser = new User(login,password);
             UserSession userSession = new UserSession(sessionId,authorizingUser, Util.getExpiryDate());
-            try {
-                new AuthorizationService().authorize(userSession);
-                logger.info("Authorization by user '" + login + "' was successful!");
-                response.sendRedirect("weather");
-            } catch (UserNotFoundException e) {
-                logger.info("User '" + login + "' is not found!");
-                context.setVariable("error","Неправильные логин или пароль!");
-                templateEngine.process("authorization", context, response.getWriter());
-            } catch (WrongPasswordException e) {
-                logger.info("Password for '" + login + "' is wrong!");
-                context.setVariable("error","Неправильные логин или пароль!");
-                templateEngine.process("authorization", context, response.getWriter());
-            }
+            new AuthorizationService().authorize(userSession);
+            response.sendRedirect("weather");
         }
     }
 }

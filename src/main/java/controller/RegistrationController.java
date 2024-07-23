@@ -26,7 +26,8 @@ public class RegistrationController extends BaseController {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, UserAlreadyExistsException {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         String passwordRepeat = request.getParameter("passwordRepeat");
@@ -53,16 +54,9 @@ public class RegistrationController extends BaseController {
             response.addCookie(cookie);
             User user = new User(login,hashedPassword);
             UserSession userSession = new UserSession(sessionId,user, Util.getExpiryDate());
-            try {
-                new RegistrationService().registration(userSession);
-                logger.info("Registration of user '" + login + "' is successful!");
-                response.sendRedirect("weather");
-            } catch (UserAlreadyExistsException e) {
-                logger.info("User with login '" + login + "' already exists!");
-                context.setVariable("userError","Пользователь с таким логином уже существует!");
-                templateEngine.process("registration", context, response.getWriter());
-            }
-
+            new RegistrationService().registration(userSession);
+            logger.info("Registration of user '" + login + "' is successful!");
+            response.sendRedirect("weather");
         }
     }
 }
