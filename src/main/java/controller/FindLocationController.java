@@ -9,12 +9,7 @@ import jakarta.servlet.annotation.*;
 import model.UserSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.web.IWebExchange;
-import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 import service.OpenWeatherApiService;
-import utils.ThymeleafUtil;
 
 import java.io.IOException;
 import java.net.http.HttpClient;
@@ -22,7 +17,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @WebServlet(name = "FindLocationController", value = "/location")
-public class FindLocationController extends HttpServlet {
+public class FindLocationController extends BaseController {
     private static final Logger logger = LogManager.getLogger(FindLocationController.class);
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -41,11 +36,6 @@ public class FindLocationController extends HttpServlet {
                 response.sendRedirect("authorization");
             } else {
                 String location = request.getParameter("location");
-                TemplateEngine templateEngine = (TemplateEngine) getServletContext()
-                        .getAttribute(ThymeleafUtil.TEMPLATE_ENGINE_ATTR);
-                IWebExchange webExchange = JakartaServletWebApplication.buildApplication(getServletContext())
-                        .buildExchange(request, response);
-                WebContext context = new WebContext(webExchange);
                 if (location.isEmpty()) {
                     context.setVariable("error", "Поле ввода пустое. Введите название города.");
                     templateEngine.process("location", context, response.getWriter());

@@ -10,18 +10,13 @@ import model.UserSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mindrot.jbcrypt.BCrypt;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.web.IWebExchange;
-import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 import service.RegistrationService;
-import utils.ThymeleafUtil;
 import utils.Util;
 
 import java.io.IOException;
 
 @WebServlet(name = "RegistrationController", value = "/registration")
-public class RegistrationController extends HttpServlet {
+public class RegistrationController extends BaseController {
     private static final Logger logger = LogManager.getLogger(RegistrationController.class);
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -31,13 +26,7 @@ public class RegistrationController extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        TemplateEngine templateEngine = (TemplateEngine) getServletContext()
-                .getAttribute(ThymeleafUtil.TEMPLATE_ENGINE_ATTR);
-        IWebExchange webExchange = JakartaServletWebApplication.buildApplication(getServletContext())
-                .buildExchange(request, response);
-        WebContext context = new WebContext(webExchange);
-
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         String passwordRepeat = request.getParameter("passwordRepeat");
