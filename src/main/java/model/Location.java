@@ -10,7 +10,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-@Table(name = "Locations")
+@Table(name = "Locations", uniqueConstraints = {@UniqueConstraint(columnNames = {"latitude", "longitude"})})
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
