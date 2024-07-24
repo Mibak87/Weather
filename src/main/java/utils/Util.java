@@ -7,7 +7,9 @@ import java.util.Date;
 
 public class Util {
     private static final int HOURS_BEFORE_SESSION_TIME_EXPIRES = 5;
-    private static final String API_KEY = "&appid=dc6eaa0000964813c5c502600f228fa2";
+    private static final String COORD_URL = "https://api.openweathermap.org/data/2.5/weather?";
+    private static final String CITY_URL = "https://api.openweathermap.org/geo/1.0/direct?q=";
+
     public static Date getExpiryDate() {
         Date currentDate = new Date();
         long updatedTimeInMillis = currentDate.getTime() + (HOURS_BEFORE_SESSION_TIME_EXPIRES * 60 * 60 * 1000);
@@ -15,21 +17,18 @@ public class Util {
     }
 
     public static String getCoordsApiUrl(Coord coord) {
-        //String api_key = System.getenv("API_KEY");
-        String url = "https://api.openweathermap.org/data/2.5/weather?";
+        String api_key = "&appid=" + System.getenv("API_KEY");
         String lat = "lat=" + coord.getLat();
         String lon = "&lon=" + coord.getLon();
         String units = "&units=metric";
-        String apiUrl = url + lat + lon + API_KEY + units;
+        String apiUrl = COORD_URL + lat + lon + api_key + units;
         return apiUrl;
     }
 
     public static String getCitiesApiUrl(String location) {
-        //Херня какая-то с переменной окружения
-        //String api_key = System.getenv("API_KEY");
-        String url = "https://api.openweathermap.org/geo/1.0/direct?q=";
+        String api_key = "&appid=" + System.getenv("API_KEY");
         String limit = "&limit=5";
-        String citiesApiUrl = url + location + limit + API_KEY;
+        String citiesApiUrl = CITY_URL + location + limit + api_key;
         return citiesApiUrl;
     }
 
