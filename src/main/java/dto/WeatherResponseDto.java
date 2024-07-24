@@ -20,5 +20,4 @@ public class WeatherResponseDto {
     private Clouds clouds;
     private Sys sys;
     private String name;
-    private long locationId;
 }
