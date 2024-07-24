@@ -1,10 +1,13 @@
 package service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import controller.filter.AuthorizationFilter;
 import dto.CitiesResponseDto;
 import dto.WeatherResponseDto;
 import dto.elements.Coord;
 import exceptions.ErrorApiConnectionException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import utils.Util;
 
 import java.net.URI;
