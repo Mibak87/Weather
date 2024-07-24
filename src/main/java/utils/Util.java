@@ -26,9 +26,15 @@ public class Util {
     }
 
     public static String getCitiesApiUrl(String location) {
+        String locationWithoutSpace;
+        if (location.contains(" ")) {
+            locationWithoutSpace = location.replace(" ","%20");
+        } else {
+            locationWithoutSpace = location;
+        }
         String api_key = "&appid=" + System.getenv("API_KEY");
         String limit = "&limit=5";
-        String citiesApiUrl = CITY_URL + location + limit + api_key;
+        String citiesApiUrl = CITY_URL + locationWithoutSpace + limit + api_key;
         return citiesApiUrl;
     }
 
