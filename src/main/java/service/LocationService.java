@@ -3,6 +3,7 @@ package service;
 import dao.LocationsDao;
 import dao.UsersDao;
 import dto.SaveLocationDto;
+import dto.elements.Coord;
 import exceptions.UserNotFoundException;
 import model.Location;
 import model.User;
@@ -33,9 +34,10 @@ public class LocationService {
         } catch (Exception e) {}
     }
 
-    public void deleteLocation(long locationId) {
-        Location location = locationsDao.findById(locationId);
-        logger.info("Location for delete: " + location);
-        locationsDao.delete(locationId);
+    public void deleteLocation(Coord coord, String userLogin) {
+        Double latitude = Double.parseDouble(coord.getLat());
+        Double longitude = Double.parseDouble(coord.getLon());
+        User user = usersDao.findByLogin(userLogin);
+        locationsDao.delete(latitude,longitude,user);
     }
 }

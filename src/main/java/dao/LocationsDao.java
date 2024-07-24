@@ -1,6 +1,7 @@
 package dao;
 
 import model.Location;
+import model.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -24,28 +25,22 @@ public class LocationsDao {
         }
     }
 
-    public void delete(long locationId) throws HibernateException {
+    public void delete(Double latitude,Double longitude, User user) throws HibernateException {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Location location = session.get(Location.class,locationId);
-            session.remove(location);
+            String hql = "DELETE FROM Location" +
+                    " WHERE latitude = :latitude AND longitude = :longitude AND user = :user";
+            Query query = session.createQuery(hql);
+            query.setParameter("latitude",latitude);
+            query.setParameter("longitude",longitude);
+            query.setParameter("user",user);
+            query.executeUpdate();
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-        }
-    }
-
-    public Location findByCoordinates(Double latitude, Double longitude) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String hql = "FROM Location l" +
-                    " WHERE l.latitude = :latitude AND l.longitude = :longitude";
-            Query query = session.createQuery(hql);
-            query.setParameter("latitude",latitude);
-            query.setParameter("longitude",longitude);
-            return (Location) query.getSingleResult();
         }
     }
 
@@ -57,12 +52,6 @@ public class LocationsDao {
                     .setParameter("login", login)
                     .getResultList();
             return location;
-        }
-    }
-
-    public Location findById(long locationId) throws HibernateException {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(Location.class,locationId);
         }
     }
 }

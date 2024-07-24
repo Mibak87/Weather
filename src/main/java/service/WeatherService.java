@@ -24,7 +24,6 @@ public class WeatherService  {
             Coord coord = new Coord(String.valueOf(location.getLongitude()), String.valueOf(location.getLatitude()));
             HttpClient httpClient = HttpClient.newHttpClient();
             WeatherResponseDto weatherResponseDto = new OpenWeatherApiService(httpClient).getWeather(coord);
-            weatherResponseDto.setLocationId(location.getId());
             weatherResponseDto.setName(location.getName());
             weatherResponseDto.setCoord(coord);
             dtoList.add(weatherResponseDto);

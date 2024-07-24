@@ -44,8 +44,10 @@
                 </p>
 
                 <div class="mb-3">
-                    <input type="text" id="city" name="locationId" class="form-email border-0"
-                           th:value="${weather.getLocationId()}" hidden>
+                    <input type="text" id="lat" name="latitude" class="form-email border-0"
+                           th:value="${weather.getCoord().getLat()}" hidden>
+                    <input type="text" id="lon" name="longitude" class="form-email border-0"
+                           th:value="${weather.getCoord().getLon()}" hidden>
                     <input type="text" id="user-login" name="userLogin" class="form-email border-0"
                            th:value="${userName}"
                            hidden>
