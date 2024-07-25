@@ -7,8 +7,10 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.query.Query;
 import utils.HibernateUtil;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,7 +50,7 @@ public class SessionsDao {
         }
     }
 
-    public void saveOrUpdate(UserSession userSession) throws HibernateException {
+    public void saveOrUpdate(UserSession userSession) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
@@ -61,12 +63,25 @@ public class SessionsDao {
         }
     }
 
-    public void delete(String id) throws HibernateException {
+    public void delete(String id) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             UserSession userSession = session.get(UserSession.class,id);
             session.remove(userSession);
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        }
+    }
+    public void deleteExpiredSessions(Date date) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            Query query = session.createQuery("DELETE FROM UserSession WHERE expiresAt <= : date");
+            query.setParameter("date",date);
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) {
