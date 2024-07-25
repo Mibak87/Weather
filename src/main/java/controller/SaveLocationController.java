@@ -1,7 +1,6 @@
 package controller;
 
 import dto.SaveLocationDto;
-import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import org.apache.logging.log4j.LogManager;
@@ -14,17 +13,16 @@ import java.io.IOException;
 public class SaveLocationController extends HttpServlet {
     private static final Logger logger = LogManager.getLogger(SaveLocationController.class);
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String cityName = request.getParameter("cityName");
         String lon = request.getParameter("lon");
         String lat = request.getParameter("lat");
-        //Логин брать из сессии
-        String userLogin = request.getParameter("userLogin");
+        String userLogin = (String) request.getAttribute("login");
         SaveLocationDto saveLocationDto = SaveLocationDto.builder()
                 .cityName(cityName)
                 .lon(lon)

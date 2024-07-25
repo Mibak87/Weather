@@ -1,7 +1,6 @@
 package controller;
 
 import dto.elements.Coord;
-import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import org.apache.logging.log4j.LogManager;
@@ -22,7 +21,7 @@ public class DeleteLocationController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String latitude = request.getParameter("latitude");
         String longitude = request.getParameter("longitude");
-        String userLogin = request.getParameter("userLogin");
+        String userLogin = (String) request.getAttribute("login");
         logger.info("Delete location by user: " + userLogin);
         new LocationService().deleteLocation(new Coord(longitude,latitude),userLogin);
         response.sendRedirect("weather");

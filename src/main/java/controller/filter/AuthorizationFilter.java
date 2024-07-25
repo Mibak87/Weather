@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Optional;
 
-@WebFilter(urlPatterns = "/weather")
+@WebFilter(urlPatterns = {"/weather","/location","/savelocation","/deletelocation"})
 public class AuthorizationFilter implements Filter {
     private static final Logger logger = LogManager.getLogger(AuthorizationFilter.class);
     @Override
