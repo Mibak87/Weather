@@ -36,8 +36,7 @@ public class AuthorizationController extends BaseController {
             context.setVariable("error","Поля не должны быть пустыми!");
             templateEngine.process("authorization", context, response.getWriter());
         } else {
-            HttpSession session = request.getSession();
-            String sessionId = session.getId();
+            String sessionId = request.getSession().getId();
             Cookie cookie = new Cookie("sessionId",sessionId);
             response.addCookie(cookie);
             User authorizingUser = new User(login,password);

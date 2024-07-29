@@ -1,6 +1,5 @@
 package service;
 
-import controller.WeatherController;
 import dao.SessionsDao;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
@@ -16,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 @WebListener
 public class DeleteSessionService implements ServletContextListener {
     private static final Logger logger = LogManager.getLogger(DeleteSessionService.class);
-    private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {

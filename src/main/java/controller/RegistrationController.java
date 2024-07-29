@@ -48,8 +48,7 @@ public class RegistrationController extends BaseController {
             templateEngine.process("registration", context, response.getWriter());
         } else {
             String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-            HttpSession session = request.getSession();
-            String sessionId = session.getId();
+            String sessionId = request.getSession().getId();
             Cookie cookie = new Cookie("sessionId",sessionId);
             response.addCookie(cookie);
             User user = new User(login,hashedPassword);

@@ -48,10 +48,9 @@ public class LocationsDao {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             String hql = "FROM Location l JOIN l.user u" +
                     " WHERE u.login = :login";
-            List<Location> location = session.createQuery(hql, Location.class)
+            return session.createQuery(hql, Location.class)
                     .setParameter("login", login)
                     .getResultList();
-            return location;
         }
     }
 }

@@ -10,14 +10,11 @@ import model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class LocationService {
     private static final Logger logger = LogManager.getLogger(LocationService.class);
 
-    private UsersDao usersDao = new UsersDao();
-    private LocationsDao locationsDao = new LocationsDao();
+    private final UsersDao usersDao = new UsersDao();
+    private final LocationsDao locationsDao = new LocationsDao();
 
     public void saveLocation(SaveLocationDto saveLocationDto) throws UserNotFoundException {
         Double lon = Double.parseDouble(saveLocationDto.getLon());
@@ -31,7 +28,9 @@ public class LocationService {
         logger.info("Location for saving: " + location);
         try {
             locationsDao.save(location);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            logger.info("Error of location saving.");
+        }
     }
 
     public void deleteLocation(Coord coord, String userLogin) {

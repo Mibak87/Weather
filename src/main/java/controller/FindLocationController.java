@@ -2,7 +2,6 @@ package controller;
 
 import dto.CitiesResponseDto;
 import exceptions.ErrorApiConnectionException;
-import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +13,7 @@ import java.io.IOException;
 public class FindLocationController extends BaseController {
     private static final Logger logger = LogManager.getLogger(FindLocationController.class);
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 
     }
 
@@ -28,7 +27,7 @@ public class FindLocationController extends BaseController {
         } else {
             try {
                 CitiesResponseDto[] citiesResponseDto = openWeatherApiService.getCities(location);
-                logger.info(citiesResponseDto.toString());
+                logger.info(citiesResponseDto);
                 context.setVariable("citiesResponse", citiesResponseDto);
                 templateEngine.process("location", context, response.getWriter());
             } catch (ErrorApiConnectionException e) {

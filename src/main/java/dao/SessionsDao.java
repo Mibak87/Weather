@@ -17,7 +17,7 @@ import java.util.Optional;
 public class SessionsDao {
 
     public void save(UserSession userSession) throws UserAlreadyExistsException {
-        Transaction transaction = null;
+        Transaction transaction;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             try {
@@ -30,7 +30,7 @@ public class SessionsDao {
                 throw e;
             }
         } catch (PersistenceException e) {
-            if (e.getCause() instanceof ConstraintViolationException cEx) {
+            if (e.getCause() instanceof ConstraintViolationException) {
                 System.out.println("ConstraintViolationException");
                 throw new UserAlreadyExistsException("The User already exists!");
             }

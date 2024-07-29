@@ -21,8 +21,7 @@ public class Util {
         String lat = "lat=" + coord.getLat();
         String lon = "&lon=" + coord.getLon();
         String units = "&units=metric";
-        String apiUrl = COORD_URL + lat + lon + api_key + units;
-        return apiUrl;
+        return COORD_URL + lat + lon + api_key + units;
     }
 
     public static String getCitiesApiUrl(String location) {
@@ -34,8 +33,7 @@ public class Util {
         }
         String api_key = "&appid=" + System.getenv("API_KEY");
         String limit = "&limit=5";
-        String citiesApiUrl = CITY_URL + locationWithoutSpace + limit + api_key;
-        return citiesApiUrl;
+        return CITY_URL + locationWithoutSpace + limit + api_key;
     }
 
     public static String getSessionIdFromCookies(Cookie[] cookies) {

@@ -12,8 +12,8 @@ import org.mindrot.jbcrypt.BCrypt;
 
 public class AuthorizationService {
     private static final Logger logger = LogManager.getLogger(AuthorizationService.class);
-    private UsersDao usersDao = new UsersDao();
-    private SessionsDao sessionsDao = new SessionsDao();
+    private final UsersDao usersDao = new UsersDao();
+    private final SessionsDao sessionsDao = new SessionsDao();
     public void authorize(UserSession userSession) throws UserNotFoundException {
         if (!usersDao.checkByLogin(userSession.getUser().getLogin())) {
             throw new UserNotFoundException("This user not found!");
