@@ -5,7 +5,6 @@ import model.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 import utils.HibernateUtil;
 
 import java.util.List;
@@ -31,11 +30,11 @@ public class LocationsDao {
             transaction = session.beginTransaction();
             String hql = "DELETE FROM Location" +
                     " WHERE latitude = :latitude AND longitude = :longitude AND user = :user";
-            Query query = session.createQuery(hql);
-            query.setParameter("latitude",latitude);
-            query.setParameter("longitude",longitude);
-            query.setParameter("user",user);
-            query.executeUpdate();
+            session.createQuery(hql, Location.class)
+                .setParameter("latitude",latitude)
+                .setParameter("longitude",longitude)
+                .setParameter("user",user)
+                .executeUpdate();
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) {

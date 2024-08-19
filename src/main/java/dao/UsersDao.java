@@ -11,10 +11,9 @@ public class UsersDao {
     public User findByLogin(String login) throws HibernateException {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             String query = "FROM User WHERE login = :login";
-            User user = session.createQuery(query, User.class)
+            return session.createQuery(query, User.class)
                     .setParameter("login", login)
                     .getSingleResult();
-            return user;
         }
     }
 
@@ -24,11 +23,7 @@ public class UsersDao {
             List<User> user = session.createQuery(query, User.class)
                     .setParameter("login", login)
                     .getResultList();
-            if (user.isEmpty()) {
-                return false;
-            } else {
-                return true;
-            }
+            return !user.isEmpty();
         }
     }
 }

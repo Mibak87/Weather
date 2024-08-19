@@ -7,7 +7,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
-import org.hibernate.query.Query;
 import utils.HibernateUtil;
 
 import java.util.Date;
@@ -80,8 +79,8 @@ public class SessionsDao {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Query query = session.createQuery("DELETE FROM UserSession WHERE expiresAt <= : date");
-            query.setParameter("date",date);
+            session.createQuery("DELETE FROM UserSession WHERE expiresAt <= : date", UserSession.class)
+            .setParameter("date",date);
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) {
